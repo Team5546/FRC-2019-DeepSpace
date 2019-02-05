@@ -27,8 +27,8 @@ public class Elevator extends PIDSubsystem {
   public DigitalInput limitSwitch;
   // public Encoder elevatorEncoder;
   public Counter switchCounter, elevatorEncoder;
-  //Currently arbitrary value
-  public final double distancePerFoot = 1000;
+  //Circumerence times 2
+  public final double heightPerRotation = 2.5 * Math.PI;
   
   PWMVictorSPX winchMotor;
 
@@ -39,8 +39,7 @@ public class Elevator extends PIDSubsystem {
     limitSwitch = new DigitalInput(RobotMap.winchLimitSwitch);
     switchCounter = new Counter(limitSwitch);
     elevatorEncoder = new Counter(RobotMap.elevatorEncoder);
-    elevatorEncoder.setDistancePerPulse(distancePerFoot);
-    // winchCounter = new Counter();
+    elevatorEncoder.setDistancePerPulse(heightPerRotation);
   }
 
   @Override
@@ -51,20 +50,11 @@ public class Elevator extends PIDSubsystem {
   public void run(double spd) {
     winchMotor.set(spd);
   }
-  //sets the winch to a specific height
-  public void goTo(int pos) {
-    if(pos == 1) {
-
-    }else if(pos == 2) {
-
-    }else if(pos == 3) {
-
-    }
-  }
+  
   protected double returnPIDInput() {
     return elevatorEncoder.getDistance();
   }
   protected void usePIDOutput(double output) {
-   
+    run(output);
   }
 }

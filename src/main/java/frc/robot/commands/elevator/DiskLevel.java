@@ -26,12 +26,13 @@ public class DiskLevel extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    //TEMPORARY NUMBERS
     if(target == 1) {
-
+      Robot.elevator.setSetpoint(12.5);
     }else if(target == 2) {
-
+      Robot.elevator.setSetpoint(2000);
     }else if(target == 3) {
-
+      Robot.elevator.setSetpoint(3000);
     }
   }
 
