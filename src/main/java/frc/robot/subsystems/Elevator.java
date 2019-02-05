@@ -11,8 +11,11 @@ package frc.robot.subsystems;
 // import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
-// import edu.wpi.first.wpilibj.Counter;
-import edu.wpi.first.wpilibj.Encoder;
+import frc.robot.RobotMap;
+import frc.robot.commands.elevator.CheckSwitch;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Counter;
+// import edu.wpi.first.wpilibj.Encoder;
 
 
 /**
@@ -21,8 +24,9 @@ import edu.wpi.first.wpilibj.Encoder;
 public class Elevator extends PIDSubsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  public Encoder elevatorEncoder;
-  // public Counter winchCounter;
+  public DigitalInput limitSwitch;
+  // public Encoder elevatorEncoder;
+  public Counter switchCounter, elevatorEncoder;
   //Currently arbitrary value
   public final double distancePerFoot = 1000;
   
@@ -31,14 +35,17 @@ public class Elevator extends PIDSubsystem {
   public Elevator() {
     //currently copied values from last year for Super
     super(4.0, 0.1, 0.0);
-    winchMotor = new PWMVictorSPX(4);
-    elevatorEncoder = new Encoder(0, 1);
+    winchMotor = new PWMVictorSPX(RobotMap.winchMotor);
+    limitSwitch = new DigitalInput(RobotMap.winchLimitSwitch);
+    switchCounter = new Counter(limitSwitch);
+    elevatorEncoder = new Counter(RobotMap.elevatorEncoder);
     elevatorEncoder.setDistancePerPulse(distancePerFoot);
     // winchCounter = new Counter();
   }
 
   @Override
   public void initDefaultCommand() {
+    setDefaultCommand(new CheckSwitch());
   }
   //runs the winch motor until motor speed set to something different
   public void run(double spd) {

@@ -10,34 +10,25 @@ package frc.robot.commands.elevator;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class DiskLevel extends Command {
-  int target;
-  boolean finished;
-  double distance;
-  double speed;
-
-  public DiskLevel(int pos, int spd) {
+public class CheckSwitch extends Command {
+  public CheckSwitch() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.elevator);
-    target = pos;
-    speed = spd;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if(target == 1) {
-
-    }else if(target == 2) {
-
-    }else if(target == 3) {
-
-    }
+    
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    if(Robot.elevator.switchCounter.get() > 0) {
+      Robot.elevator.switchCounter.reset();
+      Robot.elevator.elevatorEncoder.reset();
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
