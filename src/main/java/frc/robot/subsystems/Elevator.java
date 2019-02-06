@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.elevator.CheckSwitch;
+import frc.robot.commands.elevator.ElevatorInit;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Counter;
 
@@ -29,7 +30,7 @@ public class Elevator extends PIDSubsystem {
   public final double heightPerRotation = 2.5 * Math.PI;
 
   //Solenoid for tilting elevator up
-  Solenoid tiltenoid;
+  public Solenoid tiltenoid, lockenoid;
   PWMVictorSPX winchMotor;
 
   public Elevator() {
@@ -43,11 +44,12 @@ public class Elevator extends PIDSubsystem {
     //tilts elevator up as soon as Elevator is instantiated
     tiltenoid = new Solenoid(RobotMap.elevatorSolenoid);
     tiltenoid.set(true);
+    lockenoid = new Solenoid(RobotMap.lockSolenoid);
   }
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new CheckSwitch());
+    setDefaultCommand(new ElevatorInit());
   }
   //runs the winch motor until motor speed set to something different
   public void run(double spd) {

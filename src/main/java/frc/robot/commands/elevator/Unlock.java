@@ -10,8 +10,8 @@ package frc.robot.commands.elevator;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ElevatorUp extends Command {
-  public ElevatorUp() {
+public class Unlock extends Command {
+  public Unlock() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.elevator);
   }
@@ -19,6 +19,7 @@ public class ElevatorUp extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.elevator.lockenoid.set(true);
   }
 
   // Called repeatedly when this Command is scheduled to run

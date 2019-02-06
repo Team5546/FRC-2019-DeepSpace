@@ -29,6 +29,7 @@ public class RobotMap {
 
   //PCM
   public static final int elevatorSolenoid = 0;
+  public static final int lockSolenoid = 1;
 
   //DIO
   public static final int elevatorEncoder = 0;
