@@ -8,14 +8,13 @@
 package frc.robot.subsystems;
 
 // import edu.wpi.first.wpilibj.command.Subsystem;
-// import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.elevator.CheckSwitch;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Counter;
-// import edu.wpi.first.wpilibj.Encoder;
 
 
 /**
@@ -25,11 +24,12 @@ public class Elevator extends PIDSubsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   public DigitalInput limitSwitch;
-  // public Encoder elevatorEncoder;
   public Counter switchCounter, elevatorEncoder;
   //Circumerence times 2 in inches
   public final double heightPerRotation = 2.5 * Math.PI;
-  
+
+  //Solenoid for tilting elevator up
+  Solenoid tiltenoid;
   PWMVictorSPX winchMotor;
 
   public Elevator() {
@@ -40,6 +40,9 @@ public class Elevator extends PIDSubsystem {
     switchCounter = new Counter(limitSwitch);
     elevatorEncoder = new Counter(RobotMap.elevatorEncoder);
     elevatorEncoder.setDistancePerPulse(heightPerRotation);
+    //tilts elevator up as soon as Elevator is instantiated
+    tiltenoid = new Solenoid(RobotMap.elevatorSolenoid);
+    tiltenoid.set(true);
   }
 
   @Override
