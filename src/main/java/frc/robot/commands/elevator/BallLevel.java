@@ -11,14 +11,29 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class BallLevel extends Command {
-  public BallLevel(int pos) {
+  int target;
+  boolean finished;
+  double distance;
+  double speed;
+
+  public BallLevel(int pos, int spd) {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.elevator);
+    target = pos;
+    speed = spd;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    //Heights need testing
+    if(target == 1) {
+      Robot.elevator.setSetpoint(21);
+    }else if(target == 2) {
+      Robot.elevator.setSetpoint(49);
+    }else if(target == 3) {
+      Robot.elevator.setSetpoint(77);
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run

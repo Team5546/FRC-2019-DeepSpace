@@ -27,7 +27,7 @@ public class Elevator extends PIDSubsystem {
   public DigitalInput limitSwitch;
   // public Encoder elevatorEncoder;
   public Counter switchCounter, elevatorEncoder;
-  //Circumerence times 2
+  //Circumerence times 2 in inches
   public final double heightPerRotation = 2.5 * Math.PI;
   
   PWMVictorSPX winchMotor;
