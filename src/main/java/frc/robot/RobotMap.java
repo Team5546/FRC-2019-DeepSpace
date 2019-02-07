@@ -27,6 +27,8 @@ public class RobotMap {
 
   public static final int winchMotor = 4;
 
+  public static final int climbDriveMotor = 5;
+
   //PCM
   public static final int elevatorSolenoid = 0;
   public static final int lockSolenoid = 1;
