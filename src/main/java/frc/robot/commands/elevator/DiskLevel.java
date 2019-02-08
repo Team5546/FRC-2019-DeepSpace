@@ -12,21 +12,27 @@ import frc.robot.Robot;
 
 public class DiskLevel extends Command {
   int target;
-  public DiskLevel(int pos) {
+  boolean finished;
+  double distance;
+  double speed;
+
+  public DiskLevel(int pos, int spd) {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.elevator);
     target = pos;
+    speed = spd;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    //Heights need testing
     if(target == 1) {
-
+      Robot.elevator.setSetpoint(12.5);
     }else if(target == 2) {
-
+      Robot.elevator.setSetpoint(30.5);
     }else if(target == 3) {
-
+      Robot.elevator.setSetpoint(58.5);
     }
   }
 
@@ -38,7 +44,7 @@ public class DiskLevel extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return Robot.elevator.onTarget();
   }
 
   // Called once after isFinished returns true

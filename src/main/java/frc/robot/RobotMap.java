@@ -19,12 +19,21 @@ public class RobotMap {
   // public static int leftMotor = 1;
   // public static int rightMotor = 2;
   
+  //PWM
   public static final int leftFrontMotorChannel = 0;
   public static final int leftBackMotorChannel = 1;
   public static final int rightFrontMotorChannel = 2;
   public static final int rightBackMotorChannel = 3;
 
   public static final int winchMotor = 4;
+
+  //PCM
+  public static final int elevatorSolenoid = 0;
+  public static final int lockSolenoid = 1;
+
+  //DIO
+  public static final int elevatorEncoder = 0;
+  public static final int winchLimitSwitch = 1;
   // If you are using multiple modules, make sure to define both the port
   // number and the module. For example you with a rangefinder:
   // public static int rangefinderPort = 1;

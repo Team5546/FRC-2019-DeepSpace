@@ -8,11 +8,13 @@
 package frc.robot.subsystems;
 
 // import edu.wpi.first.wpilibj.command.Subsystem;
-// import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
-// import edu.wpi.first.wpilibj.Counter;
-import edu.wpi.first.wpilibj.Encoder;
+import frc.robot.RobotMap;
+import frc.robot.commands.elevator.ElevatorInit;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Counter;
 
 
 /**
@@ -21,43 +23,42 @@ import edu.wpi.first.wpilibj.Encoder;
 public class Elevator extends PIDSubsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  public Encoder elevatorEncoder;
-  // public Counter winchCounter;
-  //Currently arbitrary value
-  public final double distancePerFoot = 1000;
-  
+  public DigitalInput limitSwitch;
+  public Counter switchCounter, elevatorEncoder;
+  //Circumerence times 2 in inches
+  public final double heightPerRotation = 2.5 * Math.PI;
+
+  //Solenoid for tilting elevator up
+  public Solenoid tiltenoid, lockenoid;
   PWMVictorSPX winchMotor;
 
   public Elevator() {
     //currently copied values from last year for Super
     super(4.0, 0.1, 0.0);
-    winchMotor = new PWMVictorSPX(4);
-    elevatorEncoder = new Encoder(0, 1);
-    elevatorEncoder.setDistancePerPulse(distancePerFoot);
-    // winchCounter = new Counter();
+    winchMotor = new PWMVictorSPX(RobotMap.winchMotor);
+    limitSwitch = new DigitalInput(RobotMap.winchLimitSwitch);
+    switchCounter = new Counter(limitSwitch);
+    elevatorEncoder = new Counter(RobotMap.elevatorEncoder);
+    elevatorEncoder.setDistancePerPulse(heightPerRotation);
+    //tilts elevator up as soon as Elevator is instantiated
+    tiltenoid = new Solenoid(RobotMap.elevatorSolenoid);
+    tiltenoid.set(true);
+    lockenoid = new Solenoid(RobotMap.lockSolenoid);
   }
 
   @Override
   public void initDefaultCommand() {
+    setDefaultCommand(new ElevatorInit());
   }
   //runs the winch motor until motor speed set to something different
   public void run(double spd) {
     winchMotor.set(spd);
   }
-  //sets the winch to a specific height
-  public void goTo(int pos) {
-    if(pos == 1) {
-
-    }else if(pos == 2) {
-
-    }else if(pos == 3) {
-
-    }
-  }
+  
   protected double returnPIDInput() {
     return elevatorEncoder.getDistance();
   }
   protected void usePIDOutput(double output) {
-   
+    run(output);
   }
 }
