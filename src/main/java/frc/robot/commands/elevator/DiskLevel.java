@@ -11,29 +11,30 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class DiskLevel extends Command {
-  int target;
-  boolean finished;
-  double distance;
-  double speed;
+  // Define hatch heights in inches
+  private static final double LEVEL_1 = 12.5;
+  private static final double LEVEL_2 = 30.5;
+  private static final double LEVEL_3 = 58.5;
 
-  public DiskLevel(int pos, int spd) {
+  int target;
+
+  public DiskLevel(int pos) {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.elevator);
     target = pos;
-    speed = spd;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    //Heights need testing
-    if(target == 1) {
-      Robot.elevator.setSetpoint(12.5);
-    }else if(target == 2) {
-      Robot.elevator.setSetpoint(30.5);
-    }else if(target == 3) {
-      Robot.elevator.setSetpoint(58.5);
-    }
+    // Heights need testing
+    if (target == 1)
+      Robot.elevator.setSetpoint(LEVEL_1);
+    else if (target == 2)
+      Robot.elevator.setSetpoint(LEVEL_2);
+    else if (target == 3)
+      Robot.elevator.setSetpoint(LEVEL_3);
+    Robot.elevator.enable();
   }
 
   // Called repeatedly when this Command is scheduled to run

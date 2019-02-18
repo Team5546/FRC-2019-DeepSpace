@@ -7,28 +7,44 @@
 
 package frc.robot.commands.elevator;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 
-public class ElevatorInit extends CommandGroup {
-  /**
-   * Add your docs here.
-   */
+public class ElevatorInit extends Command {
   public ElevatorInit() {
-    // Add Commands here:
-    addSequential(new Unlock());
-    addSequential(new FullDown());
-    // these will run in order.
+    requires(Robot.elevator);
+  }
 
-    // To run multiple commands at the same time,
-    // use addParallel()
-    // e.g. addParallel(new Command1());
-    // addSequential(new Command2());
-    // Command1 and Command2 will run in parallel.
+  // Called just before this Command runs the first time
+  @Override
+  protected void initialize() {
+    Robot.elevator.tilt();
+    Robot.elevator.unlock();
+  }
 
-    // A command group will require all of the subsystems that each member
-    // would require.
-    // e.g. if Command1 requires chassis, and Command2 requires arm,
-    // a CommandGroup containing them would require both the chassis and the
-    // arm.
+  // Called repeatedly when this Command is scheduled to run
+  @Override
+  protected void execute() {
+    Robot.elevator.run(-0.5);
+  }
+
+  // Make this return true when this Command no longer needs to run execute()
+  @Override
+  protected boolean isFinished() {
+    return Robot.elevator.getFullDown();
+  }
+
+  // Called once after isFinished returns true
+  @Override
+  protected void end() {
+    Robot.elevator.calibrate();
+  }
+
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
+  @Override
+  protected void interrupted() {
+    Robot.elevator.setSetpointRelative(0);
+    Robot.elevator.enable();
   }
 }

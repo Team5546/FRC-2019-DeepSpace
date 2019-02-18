@@ -7,19 +7,55 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
  */
 public class Climb extends Subsystem {
-  public VictorSP climbDrive;
+  private VictorSP climbLeft;
+  private VictorSP climbRight;
+  private DifferentialDrive climbDrive;
+  private DigitalInput downLimit;
+  private DigitalInput upLimit;
+
+  private static final double SPEED = 0.5;
 
   public void climb() {
-    VictorSP climbDrive = new VictorSP(RobotMap.climbDriveMotor);
+    climbLeft = new VictorSP(RobotMap.CLIMB_MOTOR_LEFT);
+    climbRight = new VictorSP(RobotMap.CLIMB_MOTOR_RIGHT);
+    climbDrive = new DifferentialDrive(climbLeft, climbRight);
+
+    downLimit = new DigitalInput(RobotMap.CLIMB_LIMIT_DOWN);
+    upLimit = new DigitalInput(RobotMap.CLIMB_LIMIT_UP);
   }
+
+  public void down() {
+    climbDrive.tankDrive(SPEED, SPEED);
+    return;
+  }
+
+  public void up() {
+    climbDrive.tankDrive(-SPEED, -SPEED);
+    return;
+  }
+
+  public void stop() {
+    climbDrive.tankDrive(0, 0);
+  }
+
+  public boolean getUp() {
+    return !upLimit.get();
+  }
+
+  public boolean getDown() {
+    return !downLimit.get();
+  }
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.

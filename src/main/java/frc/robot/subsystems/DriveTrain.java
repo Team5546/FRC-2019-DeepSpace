@@ -16,35 +16,30 @@ import edu.wpi.first.wpilibj.VictorSP;
 import frc.robot.RobotMap;
 import frc.robot.commands.drivetrain.Drive;
 
-/**
- * Add your docs here.
- */
 public class DriveTrain extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-  DifferentialDrive robotDrive;
-  VictorSP leftFront, leftBack, rightFront, rightBack;
-  SpeedControllerGroup left, right;
+  private DifferentialDrive drive;
+  private VictorSP leftFront, leftBack, rightFront, rightBack;
+  private SpeedControllerGroup left, right;
 
-public DriveTrain() {
-  VictorSP leftBack = new VictorSP(RobotMap.leftBackMotorChannel);
-  VictorSP leftFront = new VictorSP(RobotMap.leftFrontMotorChannel);
-  VictorSP rightBack = new VictorSP(RobotMap.rightBackMotorChannel);
-  VictorSP rightFront = new VictorSP(RobotMap.rightFrontMotorChannel);
-  left = new SpeedControllerGroup(leftBack, leftFront);
-  right = new SpeedControllerGroup(rightBack, rightFront);
-  robotDrive = new DifferentialDrive(left, right);
-}
+  public DriveTrain() {
+    leftBack = new VictorSP(RobotMap.LEFT_BACK_DRIVE);
+    leftFront = new VictorSP(RobotMap.LEFT_FRONT_DRIVE);
+    rightBack = new VictorSP(RobotMap.RIGHT_BACK_DRIVE);
+    rightFront = new VictorSP(RobotMap.RIGHT_FRONT_DRIVE);
+
+    left = new SpeedControllerGroup(leftBack, leftFront);
+    right = new SpeedControllerGroup(rightBack, rightFront);
+
+    drive = new DifferentialDrive(left, right);
+  }
+
+  public void driveSticks(Joystick left, Joystick right) {
+    drive.tankDrive(left.getRawAxis(0), right.getRawAxis(0));
+  }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     setDefaultCommand(new Drive());
   }
-  public void driveStickInputs(Joystick left, Joystick right) {
-    robotDrive.tankDrive(left.getRawAxis(0), right.getRawAxis(0)); 
-  }
-  // public void stop() {
-  //   robotDrive.tankDrive(0, 0);
-  // }
 }
