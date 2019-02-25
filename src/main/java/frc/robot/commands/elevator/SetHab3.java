@@ -10,41 +10,41 @@ package frc.robot.commands.elevator;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ElevatorInit extends Command {
-  public ElevatorInit() {
+public class SetHab3 extends Command {
+  public SetHab3() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
     requires(Robot.elevator);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.elevator.tilt();
-    Robot.elevator.unlock();
+    Robot.elevator.getPIDController().setPID(4, 0.1, 0);
+    Robot.elevator.setSetpoint(19);
+    Robot.elevator.setAbsoluteTolerance(100);
+    Robot.elevator.enable();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.elevator.run(-0.5);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Robot.elevator.getFullDown();
+    return Robot.elevator.onTarget();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.elevator.calibrate();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.elevator.setSetpointRelative(0);
-    Robot.elevator.enable();
   }
 }

@@ -13,7 +13,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
-import frc.robot.commands.elevator.ElevatorInit;
+import frc.robot.commands.elevator.Init;
+import frc.robot.commands.elevator.Tilt;
 import frc.robot.subsystems.Climb;
 
 public class Robot extends TimedRobot {
@@ -22,8 +23,6 @@ public class Robot extends TimedRobot {
   public static DriveTrain driveTrain;
   public static Elevator elevator;
   public static Climb climb;
-
-  ElevatorInit elevatorInit;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -57,6 +56,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    elevator.unTilt();
   }
 
   @Override
@@ -78,8 +78,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    elevatorInit = new ElevatorInit();
-    elevatorInit.start();
+    Init init = new Init();
+    init.start();
+    //init.close();
   }
 
   /**
@@ -100,6 +101,16 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    // if (oi.rightStick.getX() > 0.5 || oi.rightStick.getX() < -0.5) climb.runForce(oi.rightStick.getX());
+    // else climb.runForce(0);
+
+    // if (oi.driveClimb.get()) climb.driveForward();
+    // else climb.driveStop();
+    
+    // System.out.println("Left X: " + oi.rightStick.getX());
+    // elevator.run(oi.leftStick.getX() * 0.8);
+    if (oi.rightStick.getTwist() > 0.75 || oi.rightStick.getTwist() < -0.75) elevator.manipulatorSet(oi.rightStick.getTwist());
+    else elevator.manipulatorSet(0);
   }
 
   /**

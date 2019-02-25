@@ -21,6 +21,8 @@ public class DriveTrain extends Subsystem {
   private VictorSP leftFront, leftBack, rightFront, rightBack;
   private SpeedControllerGroup left, right;
 
+  private boolean autoOverride = false;
+
   public DriveTrain() {
     leftBack = new VictorSP(RobotMap.LEFT_BACK_DRIVE);
     leftFront = new VictorSP(RobotMap.LEFT_FRONT_DRIVE);
@@ -34,7 +36,23 @@ public class DriveTrain extends Subsystem {
   }
 
   public void driveSticks(Joystick left, Joystick right) {
-    drive.tankDrive(left.getRawAxis(0), right.getRawAxis(0));
+    //System.out.println(right.getRawAxis(1));
+    drive.tankDrive(-left.getRawAxis(1), -right.getRawAxis(1));
+    return;
+  }
+  
+  public void driveSpeed(double speed) {
+    drive.tankDrive(speed, speed);
+    return;
+  }
+
+  public boolean isOverriden() {
+    return autoOverride;
+  }
+
+  public void setAutoOverride(boolean value) {
+    autoOverride = value;
+    return;
   }
 
   @Override

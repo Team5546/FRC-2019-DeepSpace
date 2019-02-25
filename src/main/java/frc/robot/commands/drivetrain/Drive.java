@@ -24,7 +24,7 @@ public class Drive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveTrain.driveSticks(Robot.oi.leftStick, Robot.oi.rightStick);
+    if (!Robot.driveTrain.isOverriden()) Robot.driveTrain.driveSticks(Robot.oi.leftStick, Robot.oi.rightStick);
   }
 
   // Make this return true when this Command no longer needs to run execute()

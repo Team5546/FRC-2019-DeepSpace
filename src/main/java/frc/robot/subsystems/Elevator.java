@@ -10,43 +10,53 @@ package frc.robot.subsystems;
 // import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
-import frc.robot.commands.elevator.ElevatorInit;
+import frc.robot.commands.elevator.Init;
+import frc.robot.commands.elevator.RunWinch;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
+
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Counter;
 
 public class Elevator extends PIDSubsystem {
   // Circumerence times 2 (2 stage elevator)
   private final double HEIGHT_PER_ROTATION = (1.25 * Math.PI) * 2;
 
-  private DigitalInput limitSwitch;
-  private Counter encoder;
-  private Solenoid tiltenoid, lockenoid;
-  private VictorSP winchMotorLeft, winchMotorRight;
+  private Encoder encoder;
+  private DoubleSolenoid tiltenoid;
+  private VictorSP winchMotorLeft, winchMotorRight, manipulator;
   private DifferentialDrive winch;
+  //private Compressor compressor;
+
+  private boolean autoOverride = false;
 
   public Elevator() {
-    // currently copied values from last year for Super
-    super(4.0, 0.1, 0.0);
+    super(4, 0.1, 0);   
+    setAbsoluteTolerance(20);
 
     winchMotorLeft = new VictorSP(RobotMap.WINCH_MOTOR_1);
     winchMotorRight = new VictorSP(RobotMap.WINCH_MOTOR_2);
     winch = new DifferentialDrive(winchMotorLeft, winchMotorRight);
-    limitSwitch = new DigitalInput(RobotMap.ELEVATOR_LIMIT);
-    encoder = new Counter(RobotMap.ELEVATOR_ENCODER);
-    tiltenoid = new Solenoid(RobotMap.ELEVATOR_TILT_SOLENOID);
-    lockenoid = new Solenoid(RobotMap.ELEVATOR_LOCK_SOLENOID);
 
-    encoder.setDistancePerPulse(HEIGHT_PER_ROTATION);
+    encoder = new Encoder(RobotMap.ELEVATOR_ENCODER_1, RobotMap.ELEVATOR_ENCODER_2);
+    tiltenoid = new DoubleSolenoid(RobotMap.ELEVATOR_TILT_SOLENOID_1, RobotMap.ELEVATOR_TILT_SOLENOID_2);
 
-    this.getPIDController().setOutputRange(-1, 1);
+    manipulator = new VictorSP(RobotMap.MANIPULATOR);
+
+    //encoder.setDistancePerPulse(HEIGHT_PER_ROTATION);
+
+    //this.getPIDController().setOutputRange(-1, 1);
+    //init.close();
   }
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new ElevatorInit());
+    setDefaultCommand(new RunWinch());
   }
 
   // runs the winch motor until motor speed set to something different
@@ -55,33 +65,48 @@ public class Elevator extends PIDSubsystem {
     return;
   }
 
-  public void unlock() {
-    lockenoid.set(true);
-    return;
-  }
-
   public void tilt() {
-    tiltenoid.set(true);
+    tiltenoid.set(Value.kForward);
     return;
   }
 
-  public boolean getFullDown() {
-    return limitSwitch.get();
+  public void unTilt() {
+    tiltenoid.set(Value.kReverse);
+    return;
   }
+
+  public void manipulatorSet(double speed) {
+    manipulator.set(speed);
+    return;
+  }
+
+  // public boolean getFullDown() {
+  //   return limitSwitch.get();
+  // }
 
   public void calibrate() {
     encoder.reset();
-    this.setSetpoint(0);
-    this.enable();
+    setSetpoint(0);
+    enable();
+    return;
+  }
+
+  public boolean isOverriden() {
+    return autoOverride;
+  }
+
+  public void setAutoOverride(boolean value) {
+    autoOverride = value;
     return;
   }
 
   protected double returnPIDInput() {
+    //System.out.println("Distance: " + encoder.get());
     return encoder.getDistance();
   }
 
   protected void usePIDOutput(double output) {
-    run(output);
+    winch.tankDrive(output * 0.6, output * 0.6);
     return;
   }
 }

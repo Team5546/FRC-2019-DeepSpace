@@ -5,36 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.elevator;
+package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class BallLevel extends Command {
-  // Define port heights in inches
-  private static final int LEVEL_1 = 21;
-  private static final int LEVEL_2 = 49;
-  private static final int LEVEL_3 = 77;
-
-  int target;
-
-  public BallLevel(int pos) {
+public class AutoDrive extends Command {
+  public AutoDrive() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.elevator);
-    target = pos;
+    // eg. requires(chassis);
+    requires(Robot.driveTrain);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    // Heights need testing
-    if (target == 1)
-      Robot.elevator.setSetpoint(LEVEL_1);
-    else if (target == 2)
-      Robot.elevator.setSetpoint(LEVEL_2);
-    else if (target == 3)
-      Robot.elevator.setSetpoint(LEVEL_3);
-    Robot.elevator.enable();
+    Robot.driveTrain.setAutoOverride(true);
+    Robot.driveTrain.driveSpeed(0.5);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -45,17 +32,19 @@ public class BallLevel extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Robot.elevator.onTarget();
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.driveTrain.setAutoOverride(false);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.driveTrain.setAutoOverride(false);
   }
 }

@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public class OI {
   // USB ports
@@ -18,7 +19,16 @@ public class OI {
   public Joystick leftStick = new Joystick(LEFT_STICK_PORT);
   public Joystick rightStick = new Joystick(RIGHT_STICK_PORT);
 
+  public JoystickButton rightTrigger = new JoystickButton(rightStick, 1);
+  public JoystickButton leftTrigger = new JoystickButton(leftStick, 1);
+
+  public JoystickButton ballMode1 = new JoystickButton(leftStick, 3);
+  public JoystickButton ballMode2 = new JoystickButton(leftStick, 4);
+
+  // public JoystickButton driveClimb = new JoystickButton(leftStick, 1);
+
   public OI() {
+    //driveClimb.whenPressed();
 
     //// TRIGGERING COMMANDS WITH BUTTONS
     // Once you have a button, it's trivial to bind it to a button in one of
