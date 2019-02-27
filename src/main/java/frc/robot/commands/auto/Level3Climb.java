@@ -13,17 +13,21 @@ import frc.robot.commands.climb.ClimbRetract;
 import frc.robot.commands.elevator.SetHab3;
 
 public class Level3Climb extends CommandGroup {
-  /**
-   * Add your docs here.
-   */
   public Level3Climb() {
+    // Raise Elevator to Level 3 Height
     addSequential(new ElevatorOverride());
     addSequential(new SetHab3(), 2);
+    // Drive Forward to put manipulator on platform
     addSequential(new AutoDrive(), 2);
-    addSequential(new ElevatorOverride());
+    // Make Elevator Go Down
+    addParallel(new ElevatorOverride());
+    // Extend Legs
     addParallel(new ClimbExtend());
+    // Slowly drive with main wheels
     addParallel(new AutoDrive(), 10);
+    // Drive with leg wheels
     addSequential(new ClimbDrive(), 3);
+    // Raise legs once on platform
     addSequential(new ClimbRetract(), 2);
   }
 }

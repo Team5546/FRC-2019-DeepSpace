@@ -28,7 +28,7 @@ public class Elevator extends PIDSubsystem {
   private final double HEIGHT_PER_ROTATION = (1.25 * Math.PI) * 2;
 
   private Encoder encoder;
-  private DoubleSolenoid tiltenoid;
+  private DoubleSolenoid tiltenoid, grabenoid;
   private VictorSP winchMotorLeft, winchMotorRight, manipulator;
   private DifferentialDrive winch;
   //private Compressor compressor;
@@ -44,7 +44,9 @@ public class Elevator extends PIDSubsystem {
     winch = new DifferentialDrive(winchMotorLeft, winchMotorRight);
 
     encoder = new Encoder(RobotMap.ELEVATOR_ENCODER_1, RobotMap.ELEVATOR_ENCODER_2);
+
     tiltenoid = new DoubleSolenoid(RobotMap.ELEVATOR_TILT_SOLENOID_1, RobotMap.ELEVATOR_TILT_SOLENOID_2);
+    grabenoid = new DoubleSolenoid(RobotMap.MANIPULATOR_SOLENOID_1, RobotMap.MANIPULATOR_SOLENOID_2);
 
     manipulator = new VictorSP(RobotMap.MANIPULATOR);
 
@@ -77,6 +79,16 @@ public class Elevator extends PIDSubsystem {
 
   public void manipulatorSet(double speed) {
     manipulator.set(speed);
+    return;
+  }
+
+  public void grip() {
+    grabenoid.set(Value.kForward);
+    return;
+  }
+
+  public void letGo() {
+    grabenoid.set(Value.kReverse);
     return;
   }
 
