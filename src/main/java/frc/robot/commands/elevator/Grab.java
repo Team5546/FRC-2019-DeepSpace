@@ -20,7 +20,7 @@ public class Grab extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if (Robot.oi.grab1.get() && Robot.oi.grab2.get()) Robot.elevator.grip();
+    if (Robot.oi.grab1.get() || Robot.oi.grab2.get()) Robot.elevator.grip();
   }
 
   // Called repeatedly when this Command is scheduled to run

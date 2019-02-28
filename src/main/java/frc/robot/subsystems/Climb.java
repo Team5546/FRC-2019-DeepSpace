@@ -38,16 +38,19 @@ public class Climb extends Subsystem {
   }
 
   public void down() {
+    System.out.println("Down");
     climbDrive.tankDrive(SPEED, SPEED);
     return;
   }
 
   public void up() {
+    System.out.println("Up");
     climbDrive.tankDrive(-SPEED, -SPEED);
     return;
   }
 
   public void stop() {
+    System.out.println("Stop");
     climbDrive.tankDrive(0, 0);
   }
 

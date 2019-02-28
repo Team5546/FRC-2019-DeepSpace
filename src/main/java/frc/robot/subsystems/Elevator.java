@@ -83,12 +83,12 @@ public class Elevator extends PIDSubsystem {
   }
 
   public void grip() {
-    grabenoid.set(Value.kForward);
+    grabenoid.set(Value.kReverse);
     return;
   }
 
   public void letGo() {
-    grabenoid.set(Value.kReverse);
+    grabenoid.set(Value.kForward);
     return;
   }
 

@@ -30,10 +30,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    oi = new OI();
     driveTrain = new DriveTrain();
     elevator = new Elevator();
     climb = new Climb();
+    oi = new OI();
   }
 
   /**

@@ -31,7 +31,7 @@ public class ClimbExtend extends Command {
   @Override
   protected boolean isFinished() {
     //return Robot.climb.getDown();
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true

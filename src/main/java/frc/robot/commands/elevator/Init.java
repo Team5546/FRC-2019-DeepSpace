@@ -14,8 +14,9 @@ public class Init extends CommandGroup {
    * Add your docs here.
    */
   public Init() {
-    addSequential(new Tilt(), 2);
+    addSequential(new Tilt(), 1);
     addSequential(new Untilt());
+    addSequential(new Calibrate());
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
