@@ -25,8 +25,8 @@ public class RobotMap {
   // PCM
   public static final int ELEVATOR_TILT_SOLENOID_1 = 0;
   public static final int ELEVATOR_TILT_SOLENOID_2 = 1;
-  public static final int MANIPULATOR_SOLENOID_1 = 7;
-  public static final int MANIPULATOR_SOLENOID_2 = 3;
+  public static final int MANIPULATOR_SOLENOID_1 = 3;
+  public static final int MANIPULATOR_SOLENOID_2 = 7;
 
   // DIO
   public static final int ELEVATOR_ENCODER_1 = 0;

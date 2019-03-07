@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -16,6 +18,8 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.commands.elevator.Init;
 import frc.robot.commands.elevator.Tilt;
 import frc.robot.subsystems.Climb;
+import frc.robot.commands.elevator.Grab;
+import frc.robot.commands.elevator.LetGo;
 
 public class Robot extends TimedRobot {
   // public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
@@ -34,6 +38,13 @@ public class Robot extends TimedRobot {
     elevator = new Elevator();
     climb = new Climb();
     oi = new OI();
+    climb.stop();
+    elevator.calibrate();
+    SmartDashboard.putData("PID", elevator.getPIDController());
+    SmartDashboard.putData(new Grab());
+    SmartDashboard.putData(new LetGo());
+
+    CameraServer.getInstance().addAxisCamera("10.55.46.15");
   }
 
   /**
@@ -89,10 +100,21 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+    if (oi.rightStick.getTwist() > 0.9 || oi.rightStick.getTwist() < -0.9)
+      elevator.manipulatorSet(-oi.rightStick.getTwist() + .15);
+    else
+      elevator.manipulatorSet(0);
+
+    double twist = Robot.oi.leftStick.getTwist();
+    if (twist > 0.5 || twist < -0.5)
+      Robot.elevator.run(-twist);
+    else
+      Robot.elevator.run(0);
   }
 
   @Override
   public void teleopInit() {
+    //elevator.calibrate();
   }
 
   /**
@@ -109,8 +131,17 @@ public class Robot extends TimedRobot {
     
     // System.out.println("Left X: " + oi.rightStick.getX());
     // elevator.run(oi.leftStick.getX() * 0.8);
-    if (oi.rightStick.getTwist() > 0.75 || oi.rightStick.getTwist() < -0.75) elevator.manipulatorSet(oi.rightStick.getTwist());
+    if (oi.rightStick.getTwist() > 0.9 || oi.rightStick.getTwist() < -0.9) elevator.manipulatorSet(-oi.rightStick.getTwist() + .15);
     else elevator.manipulatorSet(0);
+
+    if (oi.rightStick.getX() > 0.5 || oi.rightStick.getX() < -0.5)
+      climb.runForce(oi.rightStick.getX());
+    else
+      climb.runForce(0);
+    if (oi.rightStick.getTrigger())
+      climb.driveForward();
+    else
+      climb.driveStop();
   }
 
   /**

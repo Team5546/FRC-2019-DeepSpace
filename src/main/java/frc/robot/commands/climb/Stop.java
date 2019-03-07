@@ -5,37 +5,33 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.elevator;
+package frc.robot.commands.climb;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class RunRelative extends Command {
-  private double relative_dist;
-
-  public RunRelative(double offset) {
-    requires(Robot.elevator);
-
-    relative_dist = offset;
+public class Stop extends Command {
+  public Stop() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+    requires(Robot.climb);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.elevator.setAutoOverride(true);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.elevator.setSetpointRelative(relative_dist);
-    Robot.elevator.enable();
+    if (!Robot.climb.override) Robot.climb.stop();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Robot.elevator.onTarget();
+    return true;
   }
 
   // Called once after isFinished returns true

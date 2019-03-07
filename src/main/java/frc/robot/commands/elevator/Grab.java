@@ -20,18 +20,21 @@ public class Grab extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if (Robot.oi.grab1.get() || Robot.oi.grab2.get()) Robot.elevator.grip();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    //System.out.println("Buttons Pressed? " + Robot.oi.leftStick.getRawButtonPressed(3) + " " + Robot.oi.leftStick.getRawButtonPressed(4));
+    //if (Robot.oi.leftStick.getRawButtonPressed(3) || Robot.oi.leftStick.getRawButtonPressed(4))
+      //Robot.elevator.grip();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    Robot.elevator.grip();
+    return true;
   }
 
   // Called once after isFinished returns true

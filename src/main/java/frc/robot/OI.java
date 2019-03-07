@@ -9,8 +9,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.auto.Level3Climb;
 import frc.robot.commands.auto.PlaceHatch;
 import frc.robot.commands.auto.TakeHatch;
+import frc.robot.commands.elevator.Calibrate;
+import frc.robot.commands.elevator.Grab;
+import frc.robot.commands.elevator.LetGo;
 
 public class OI {
   // USB ports
@@ -30,13 +34,17 @@ public class OI {
   public JoystickButton grab1 = new JoystickButton(rightStick, 3);
   public JoystickButton grab2 = new JoystickButton(rightStick, 4);
 
+  public JoystickButton autoTest = new JoystickButton(rightStick, 12);
+
   // public JoystickButton driveClimb = new JoystickButton(leftStick, 1);
 
   public OI() {
-    grab1.whenPressed(new TakeHatch());
-    grab2.whenPressed(new TakeHatch());
+    grab1.whenPressed(new Grab());
+    grab2.whenPressed(new Grab());
 
-    grab1.whenReleased(new PlaceHatch());
-    grab2.whenReleased(new PlaceHatch());
+    grab1.whenReleased(new LetGo());
+    grab2.whenReleased(new LetGo());
+
+    autoTest.whenPressed(new Level3Climb());
   }
 }

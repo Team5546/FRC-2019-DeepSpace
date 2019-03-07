@@ -8,6 +8,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.robot.commands.elevator.Grab;
 import frc.robot.commands.elevator.LetGo;
 import frc.robot.commands.elevator.RunRelative;
@@ -19,7 +20,8 @@ public class PlaceHatch extends CommandGroup {
 
   public PlaceHatch() {
     addSequential(new Grab());
-    addSequential(new RunRelative(-HATCH_OFFSET), .5);
+    addSequential(new WaitCommand(1));
+    //addSequential(new RunRelative(-HATCH_OFFSET), 2);
     addSequential(new LetGo());
   }
 }

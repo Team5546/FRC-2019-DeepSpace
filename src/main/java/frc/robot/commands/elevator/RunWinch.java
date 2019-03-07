@@ -30,6 +30,7 @@ public class RunWinch extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.elevator.enable();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -42,6 +43,7 @@ public class RunWinch extends Command {
         if (Robot.oi.rightTrigger.get()) {
           // Both Triggers Pressed
           if (Robot.oi.leftTrigger.get())
+            
             Robot.elevator.setSetpoint(BALL_LEVEL_3);
           // Only Right Trigger Pressed
           else
@@ -72,9 +74,19 @@ public class RunWinch extends Command {
         else
           Robot.elevator.setSetpoint(0);
       }
+      //System.out.println(Robot.oi.rightStick.getTrigger());
+      System.out.print("\nSetpoint: " + Robot.elevator.getSetpoint());
+      System.out.print("\tPosition: " + Robot.elevator.getPosition());
+      System.out.print("\tPosition - Setpoint: " + (Robot.elevator.getPosition() - Robot.elevator.getSetpoint()));
+    //   if (Robot.oi.rightStick.getTrigger()) {
+    //     Robot.elevator.setSetpoint(1);
+    //     Robot.elevator.enable();
+    //   }
+    //   else Robot.elevator.disable();
 
       // Enable to go to setpoint
-      Robot.elevator.enable();
+      Robot.elevator.setAbsoluteTolerance(500);
+      //Robot.elevator.enable();
     }
   }
 

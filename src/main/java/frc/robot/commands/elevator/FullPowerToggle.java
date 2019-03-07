@@ -10,32 +10,28 @@ package frc.robot.commands.elevator;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class RunRelative extends Command {
-  private double relative_dist;
-
-  public RunRelative(double offset) {
+public class FullPowerToggle extends Command {
+  public FullPowerToggle() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
     requires(Robot.elevator);
-
-    relative_dist = offset;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.elevator.setAutoOverride(true);
+    //Robot.elevator.fullSpeed = !Robot.elevator.fullSpeed;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.elevator.setSetpointRelative(relative_dist);
-    Robot.elevator.enable();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Robot.elevator.onTarget();
+    return false;
   }
 
   // Called once after isFinished returns true

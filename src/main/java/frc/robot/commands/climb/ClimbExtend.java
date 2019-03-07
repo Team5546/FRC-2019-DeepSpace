@@ -19,6 +19,7 @@ public class ClimbExtend extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.climb.toggleOverride();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -31,12 +32,13 @@ public class ClimbExtend extends Command {
   @Override
   protected boolean isFinished() {
     //return Robot.climb.getDown();
-    return true;
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.climb.toggleOverride();
     Robot.climb.stop();
   }
 
@@ -44,6 +46,7 @@ public class ClimbExtend extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.climb.toggleOverride();
     Robot.climb.stop();
   }
 }

@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
 
 import frc.robot.commands.climb.ClimbExtend;
+import frc.robot.commands.climb.Stop;
 
 /**
  * Add your docs here.
@@ -25,6 +26,8 @@ public class Climb extends Subsystem {
   private DigitalInput upLimit;
 
   private static final double SPEED = 0.5;
+
+  public boolean override = false;
 
   public Climb() {
     climbLeft = new VictorSP(RobotMap.CLIMB_MOTOR_LEFT);
@@ -50,7 +53,7 @@ public class Climb extends Subsystem {
   }
 
   public void stop() {
-    System.out.println("Stop");
+    //System.out.println("Stop");
     climbDrive.tankDrive(0, 0);
   }
 
@@ -64,6 +67,7 @@ public class Climb extends Subsystem {
 
   public void runForce(double speed) {
     //System.out.println("Speed: " + climbDrive);
+    override = true;
     climbDrive.tankDrive(speed, speed);
     //climbLeft.set(speed);
     //climbRight.set(-speed);
@@ -80,10 +84,14 @@ public class Climb extends Subsystem {
     return;
   }
 
+  public void toggleOverride() {
+    override = !override;
+  }
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new ClimbExtend());
+    setDefaultCommand(new Stop());
   }
 }

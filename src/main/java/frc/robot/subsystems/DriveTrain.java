@@ -37,7 +37,7 @@ public class DriveTrain extends Subsystem {
 
   public void driveSticks(Joystick left, Joystick right) {
     //System.out.println(right.getRawAxis(1));
-    drive.tankDrive(-left.getRawAxis(1), -right.getRawAxis(1));
+    drive.tankDrive(-left.getRawAxis(1) * 0.8, -right.getRawAxis(1) * 0.8);
     return;
   }
   

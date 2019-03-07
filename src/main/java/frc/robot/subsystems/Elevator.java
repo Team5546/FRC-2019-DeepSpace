@@ -13,8 +13,11 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.elevator.Init;
+import frc.robot.commands.elevator.RunManual;
+import frc.robot.commands.elevator.RunRelative;
 import frc.robot.commands.elevator.RunWinch;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -36,14 +39,15 @@ public class Elevator extends PIDSubsystem {
   private boolean autoOverride = false;
 
   public Elevator() {
-    super(4, 0.1, 0);   
-    setAbsoluteTolerance(20);
+    super(.05, .1, .1);   
+    setAbsoluteTolerance(100);
 
     winchMotorLeft = new VictorSP(RobotMap.WINCH_MOTOR_1);
     winchMotorRight = new VictorSP(RobotMap.WINCH_MOTOR_2);
     winch = new DifferentialDrive(winchMotorLeft, winchMotorRight);
 
-    encoder = new Encoder(RobotMap.ELEVATOR_ENCODER_1, RobotMap.ELEVATOR_ENCODER_2);
+    encoder = new Encoder(0, 1);
+    encoder.reset();
 
     tiltenoid = new DoubleSolenoid(RobotMap.ELEVATOR_TILT_SOLENOID_1, RobotMap.ELEVATOR_TILT_SOLENOID_2);
     grabenoid = new DoubleSolenoid(RobotMap.MANIPULATOR_SOLENOID_1, RobotMap.MANIPULATOR_SOLENOID_2);
@@ -58,7 +62,8 @@ public class Elevator extends PIDSubsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new RunWinch());
+    // setDefaultCommand(new RunWinch());
+    setDefaultCommand(new RunManual());
   }
 
   // runs the winch motor until motor speed set to something different
@@ -83,12 +88,14 @@ public class Elevator extends PIDSubsystem {
   }
 
   public void grip() {
-    grabenoid.set(Value.kReverse);
+    //System.out.println("Grip");
+    grabenoid.set(Value.kForward);
     return;
   }
 
   public void letGo() {
-    grabenoid.set(Value.kForward);
+    //System.out.println("Let Go");
+    grabenoid.set(Value.kReverse);
     return;
   }
 
@@ -97,9 +104,8 @@ public class Elevator extends PIDSubsystem {
   // }
 
   public void calibrate() {
+    System.out.println("CALIBRATE");
     encoder.reset();
-    setSetpoint(0);
-    enable();
     return;
   }
 
@@ -113,11 +119,11 @@ public class Elevator extends PIDSubsystem {
   }
 
   protected double returnPIDInput() {
-    //System.out.println("Distance: " + encoder.get());
     return encoder.getDistance();
   }
 
   protected void usePIDOutput(double output) {
+    //System.out.println("Distance: " + encoder.getDistance() + "\tOutput: " + (output * 0.6));
     winch.tankDrive(output * 0.6, output * 0.6);
     return;
   }

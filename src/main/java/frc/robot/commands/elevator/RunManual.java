@@ -7,35 +7,42 @@
 
 package frc.robot.commands.elevator;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class RunRelative extends Command {
-  private double relative_dist;
-
-  public RunRelative(double offset) {
+public class RunManual extends Command {
+  public RunManual() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
     requires(Robot.elevator);
-
-    relative_dist = offset;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.elevator.setAutoOverride(true);
+    Robot.elevator.disable();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.elevator.setSetpointRelative(relative_dist);
-    Robot.elevator.enable();
+    double twist = Robot.oi.leftStick.getTwist();
+    if (twist > 0.5 || twist < -0.5) {
+      if (DriverStation.getInstance().getMatchTime() > 30) {
+        Robot.elevator.run(-twist * 0.75);
+      }
+      else {
+        Robot.elevator.run(-twist);
+      }
+    }
+    else Robot.elevator.run(0);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Robot.elevator.onTarget();
+    return false;
   }
 
   // Called once after isFinished returns true
