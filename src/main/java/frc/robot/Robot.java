@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -27,6 +28,7 @@ public class Robot extends TimedRobot {
   public static DriveTrain driveTrain;
   public static Elevator elevator;
   public static Climb climb;
+  public static UsbCamera floorCam, climbCam;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -38,13 +40,18 @@ public class Robot extends TimedRobot {
     elevator = new Elevator();
     climb = new Climb();
     oi = new OI();
+    
     climb.stop();
     elevator.calibrate();
-    SmartDashboard.putData("PID", elevator.getPIDController());
-    SmartDashboard.putData(new Grab());
-    SmartDashboard.putData(new LetGo());
+    //SmartDashboard.putData("PID", elevator.getPIDController());
+    //SmartDashboard.putData(new Grab());
+    //SmartDashboard.putData(new LetGo());
 
+    floorCam = CameraServer.getInstance().startAutomaticCapture(0);
+    climbCam = CameraServer.getInstance().startAutomaticCapture(1);
     CameraServer.getInstance().addAxisCamera("10.55.46.15");
+    CameraServer.getInstance().addCamera(floorCam);
+    CameraServer.getInstance().addCamera(climbCam);
   }
 
   /**

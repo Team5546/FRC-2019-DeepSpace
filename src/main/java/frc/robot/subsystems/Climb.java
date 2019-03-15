@@ -75,7 +75,7 @@ public class Climb extends Subsystem {
   }
 
   public void driveForward() {
-    climbWheel.set(-1);
+    climbWheel.set(-.75);
     return;
   }
 
