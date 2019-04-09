@@ -27,16 +27,18 @@ public class RunManual extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double twist = Robot.oi.leftStick.getTwist();
-    if (twist > 0.5 || twist < -0.5) {
-      if (DriverStation.getInstance().getMatchTime() > 30) {
-        Robot.elevator.run(-twist * 0.75);
+    if (!Robot.elevator.isOverriden()) {
+      double twist = Robot.oi.leftStick.getTwist();
+      if (twist > 0.5 || twist < -0.5) {
+        if (DriverStation.getInstance().getMatchTime() > 30) {
+          Robot.elevator.run(-twist * 0.75);
+        }
+        else {
+          Robot.elevator.run(-twist);
+        }
       }
-      else {
-        Robot.elevator.run(-twist);
-      }
+      else Robot.elevator.run(0);
     }
-    else Robot.elevator.run(0);
   }
 
   // Make this return true when this Command no longer needs to run execute()

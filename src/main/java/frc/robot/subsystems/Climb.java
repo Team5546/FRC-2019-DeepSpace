@@ -20,12 +20,12 @@ import frc.robot.commands.climb.Stop;
  * Add your docs here.
  */
 public class Climb extends Subsystem {
-  private VictorSP climbLeft, climbRight, climbWheel;
+  private VictorSP climbLeft, climbRight;
   DifferentialDrive climbDrive;
   private DigitalInput downLimit;
   private DigitalInput upLimit;
 
-  private static final double SPEED = 0.5;
+  private static final double SPEED = .8;
 
   public boolean override = false;
 
@@ -33,22 +33,18 @@ public class Climb extends Subsystem {
     climbLeft = new VictorSP(RobotMap.CLIMB_MOTOR_LEFT);
     climbRight = new VictorSP(RobotMap.CLIMB_MOTOR_RIGHT);
     climbDrive = new DifferentialDrive(climbLeft, climbRight);
-    climbWheel = new VictorSP(RobotMap.CLIMB_DRIVE);
-
-    downLimit = new DigitalInput(RobotMap.CLIMB_LIMIT_DOWN);
-    upLimit = new DigitalInput(RobotMap.CLIMB_LIMIT_UP);
-    //climbDrive.tankDrive(0, 0);
   }
 
   public void down() {
-    System.out.println("Down");
+    //System.out.println("Down");
     climbDrive.tankDrive(SPEED, SPEED);
+    //climbLeft.set(1);
     return;
   }
 
   public void up() {
-    System.out.println("Up");
-    climbDrive.tankDrive(-SPEED, -SPEED);
+    //System.out.println("Up");
+    climbDrive.tankDrive(-.1, -.1);
     return;
   }
 
@@ -57,35 +53,17 @@ public class Climb extends Subsystem {
     climbDrive.tankDrive(0, 0);
   }
 
-  public boolean getUp() {
-    return !upLimit.get();
-  }
-
-  public boolean getDown() {
-    return !downLimit.get();
-  }
-
   public void runForce(double speed) {
     //System.out.println("Speed: " + climbDrive);
-    override = true;
+    //override = true;
     climbDrive.tankDrive(speed, speed);
     //climbLeft.set(speed);
     //climbRight.set(-speed);
     return;
   }
 
-  public void driveForward() {
-    climbWheel.set(-.75);
-    return;
-  }
-
-  public void driveStop() {
-    climbWheel.set(0);
-    return;
-  }
-
-  public void toggleOverride() {
-    override = !override;
+  public void setOverride(boolean o) {
+    override = o;
   }
 
   @Override

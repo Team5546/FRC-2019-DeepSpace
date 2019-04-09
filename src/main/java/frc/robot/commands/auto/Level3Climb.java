@@ -8,26 +8,22 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.robot.commands.climb.ClimbExtend;
 import frc.robot.commands.climb.ClimbRetract;
-import frc.robot.commands.elevator.SetHab3;
+import frc.robot.commands.elevator.RunWinch;
+import frc.robot.commands.gyro.GyroClimb;
 
 public class Level3Climb extends CommandGroup {
+
+  int liftTime = 6;
+  int driveTime = 3;
+
   public Level3Climb() {
-    // Raise Elevator to Level 3 Height
-    //addSequential(new ElevatorOverride());
-    addSequential(new SetHab3(), 10);
-    // Drive Forward to put manipulator on platform
-    addSequential(new AutoDrive(), 2);
-    // Make Elevator Go Down
-    //addParallel(new ElevatorOverride());
-    // Extend Legs
-    addParallel(new ClimbExtend(), 2);
-    // Slowly drive with main wheels
-    addParallel(new AutoDrive(), 10);
-    // Drive with leg wheels
-    addSequential(new ClimbDrive(), 3);
-    // Raise legs once on platform
-    addSequential(new ClimbRetract(), 2);
+    addParallel(new GyroClimb(), liftTime);
+    addSequential(new WaitCommand(3.5));
+    addParallel(new ClimbDrive(), driveTime);
+    addSequential(new WaitCommand(driveTime + 1));
+    addSequential(new ClimbRetract(), 1);
   }
 }

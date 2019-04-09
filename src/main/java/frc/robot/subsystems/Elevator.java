@@ -42,8 +42,9 @@ public class Elevator extends PIDSubsystem {
     super(.05, .1, .1);   
     setAbsoluteTolerance(100);
 
-    winchMotorLeft = new VictorSP(RobotMap.WINCH_MOTOR_1);
+    winchMotorLeft = new VictorSP(RobotMap  .WINCH_MOTOR_1);
     winchMotorRight = new VictorSP(RobotMap.WINCH_MOTOR_2);
+    winchMotorRight.setInverted(true);
     winch = new DifferentialDrive(winchMotorLeft, winchMotorRight);
 
     encoder = new Encoder(0, 1);
@@ -89,13 +90,13 @@ public class Elevator extends PIDSubsystem {
 
   public void grip() {
     //System.out.println("Grip");
-    grabenoid.set(Value.kForward);
+    grabenoid.set(Value.kReverse);
     return;
   }
 
   public void letGo() {
     //System.out.println("Let Go");
-    grabenoid.set(Value.kReverse);
+    grabenoid.set(Value.kForward);
     return;
   }
 

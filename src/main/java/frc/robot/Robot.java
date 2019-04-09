@@ -7,10 +7,13 @@
 
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,6 +22,7 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.commands.elevator.Init;
 import frc.robot.commands.elevator.Tilt;
 import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.ClimbTrain;
 import frc.robot.commands.elevator.Grab;
 import frc.robot.commands.elevator.LetGo;
 
@@ -29,6 +33,8 @@ public class Robot extends TimedRobot {
   public static Elevator elevator;
   public static Climb climb;
   public static UsbCamera floorCam, climbCam;
+  public static Gyro gyro;
+  public static ClimbTrain climbTrain;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -39,6 +45,9 @@ public class Robot extends TimedRobot {
     driveTrain = new DriveTrain();
     elevator = new Elevator();
     climb = new Climb();
+    climbTrain = new ClimbTrain();
+    gyro = new Gyro();
+
     oi = new OI();
     
     climb.stop();
@@ -47,11 +56,11 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putData(new Grab());
     //SmartDashboard.putData(new LetGo());
 
-    floorCam = CameraServer.getInstance().startAutomaticCapture(0);
-    climbCam = CameraServer.getInstance().startAutomaticCapture(1);
-    CameraServer.getInstance().addAxisCamera("10.55.46.15");
-    CameraServer.getInstance().addCamera(floorCam);
-    CameraServer.getInstance().addCamera(climbCam);
+    //floorCam = CameraServer.getInstance().startAutomaticCapture(0);
+    //climbCam = CameraServer.getInstance().startAutomaticCapture(1);
+    //CameraServer.getInstance().addAxisCamera("10.55.46.15");
+    //CameraServer.getInstance().addCamera(floorCam);
+    //CameraServer.getInstance().addCamera(climbCam);
   }
 
   /**
@@ -65,6 +74,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    //System.out.println("Pitch: " + (int) ahrs.getPitch() + " | Roll: " + (int) ahrs.getRoll() + " | Yaw: " + (int) ahrs.getYaw());
   }
 
   /**
@@ -141,14 +151,18 @@ public class Robot extends TimedRobot {
     if (oi.rightStick.getTwist() > 0.9 || oi.rightStick.getTwist() < -0.9) elevator.manipulatorSet(-oi.rightStick.getTwist() + .15);
     else elevator.manipulatorSet(0);
 
-    if (oi.rightStick.getX() > 0.5 || oi.rightStick.getX() < -0.5)
-      climb.runForce(oi.rightStick.getX());
-    else
-      climb.runForce(0);
-    if (oi.rightStick.getTrigger())
-      climb.driveForward();
-    else
-      climb.driveStop();
+    if (!climb.override) {
+      if (oi.rightStick.getX() > 0.5 || oi.rightStick.getX() < -0.5)
+        climb.runForce(oi.rightStick.getX());
+      else
+        climb.runForce(0);
+    }
+    if (!climbTrain.override) {
+      if (oi.rightStick.getTrigger())
+        climbTrain.driveForward();
+      else
+        climbTrain.driveStop();
+    }
   }
 
   /**

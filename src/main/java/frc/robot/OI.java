@@ -15,6 +15,7 @@ import frc.robot.commands.auto.TakeHatch;
 import frc.robot.commands.elevator.Calibrate;
 import frc.robot.commands.elevator.Grab;
 import frc.robot.commands.elevator.LetGo;
+import frc.robot.commands.gyro.GyroClimb;
 
 public class OI {
   // USB ports
