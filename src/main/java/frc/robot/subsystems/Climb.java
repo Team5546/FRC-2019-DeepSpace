@@ -7,13 +7,10 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
-
-import frc.robot.commands.climb.ClimbExtend;
 import frc.robot.commands.climb.Stop;
 
 /**
@@ -22,8 +19,8 @@ import frc.robot.commands.climb.Stop;
 public class Climb extends Subsystem {
   private VictorSP climbLeft, climbRight;
   DifferentialDrive climbDrive;
-  private DigitalInput downLimit;
-  private DigitalInput upLimit;
+  //private DigitalInput downLimit;
+  //private DigitalInput upLimit;
 
   private static final double SPEED = .8;
 

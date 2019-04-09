@@ -12,16 +12,16 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.robot.commands.climb.ClimbRetract;
 import frc.robot.commands.gyro.GyroClimb;
 
-public class Level3Climb extends CommandGroup {
-
-  int liftTime = 6;
+public class Level2Climb extends CommandGroup {
+  
+  int liftTime = 2;
   int driveTime = 3;
 
-  public Level3Climb() {
+  public Level2Climb() {
     addParallel(new GyroClimb(), liftTime);
-    addSequential(new WaitCommand(3.5));
+    addSequential(new WaitCommand(0.5));
     addParallel(new ClimbDrive(), driveTime);
-    addSequential(new WaitCommand(driveTime + 1));
-    addSequential(new ClimbRetract(), 1);
+    addSequential(new WaitCommand(driveTime + 0.25));
+    addSequential(new ClimbRetract(), .25);
   }
 }

@@ -11,12 +11,11 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.robot.commands.elevator.Grab;
 import frc.robot.commands.elevator.LetGo;
-import frc.robot.commands.elevator.RunRelative;
 
 public class PlaceHatch extends CommandGroup {
-  private static final double HEIGHT_PER_ROTATION = (1.25 * Math.PI) * 2;
+  //private static final double HEIGHT_PER_ROTATION = (1.25 * Math.PI) * 2;
 
-  private static final double HATCH_OFFSET = 3 * HEIGHT_PER_ROTATION;
+  //private static final double HATCH_OFFSET = 3 * HEIGHT_PER_ROTATION;
 
   public PlaceHatch() {
     addSequential(new Grab());

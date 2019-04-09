@@ -7,28 +7,18 @@
 
 package frc.robot.subsystems;
 
-// import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
-import frc.robot.commands.elevator.Init;
 import frc.robot.commands.elevator.RunManual;
-import frc.robot.commands.elevator.RunRelative;
-import frc.robot.commands.elevator.RunWinch;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Encoder;
-
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.Counter;
 
 public class Elevator extends PIDSubsystem {
   // Circumerence times 2 (2 stage elevator)
-  private final double HEIGHT_PER_ROTATION = (1.25 * Math.PI) * 2;
+  //private final double HEIGHT_PER_ROTATION = (1.25 * Math.PI) * 2;
 
   private Encoder encoder;
   private DoubleSolenoid tiltenoid, grabenoid;
